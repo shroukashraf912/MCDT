@@ -70,8 +70,8 @@ uint16_t keyColor[15] = {TFT_BLACK, TFT_BLACK, TFT_BLACK,
                          New_C, Send_C, Blue
                         };
               
-char* BSG_Result;
-char* BP_Result;
+char* BSG_Result = NULL;
+char* BP_Result = NULL;
 
 /*******************************************************************************/
 
@@ -160,6 +160,6 @@ uint16_t IdColor[15] = { TFT_BLACK, TFT_BLACK, TFT_BLACK,
                          TFT_BLACK, TFT_BLACK, TFT_DARKGREY,
                              New_C,    Send_C, Blue
                         };
-char* IdNum;
+char* IdNum = NULL;
 /******************************************************************************/
 /*-----------------------------------------------------------------------------------------------------------------------------*/
