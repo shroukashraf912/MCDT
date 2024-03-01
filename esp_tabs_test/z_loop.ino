@@ -237,7 +237,7 @@ void loop()
     Ba_EN.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
   }
   /******************************************************************/
- /* if (pressed && TOTAL.contains(t_x, t_y)) 
+  if (pressed && TOTAL.contains(t_x, t_y)) 
   {
     TOTAL.press(true);
   } 
@@ -249,10 +249,7 @@ void loop()
   if (TOTAL.justReleased()) 
   {
     TOTAL.drawButton();
-    while (BaHSTBu.isPressed()) {
       HSTGP_Page(); // Stay in HSTGP_Page until BaHSTBu is released
-      delay(100);
-    }
   }
   if (TOTAL.justPressed()) 
   {
@@ -261,25 +258,32 @@ void loop()
     ENTERY.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
     INFO.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
     CLOCK.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+    LOCK.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
   }
-  /******************************************************************
+  /******************************************************************/
   // Press on Back button
- if (pressed && BaHSTBu.contains(t_x, t_y)) {
+  if (pressed && BaHSTBu.contains(t_x, t_y)) 
+  {
     BaHSTBu.press(true);
-  } else {
+  } 
+  else 
+  {
     BaHSTBu.press(false);
   }
 
   // Handle BaHSTBu button press
-  if (BaHSTBu.justReleased()) {
+  if (BaHSTBu.justReleased()) 
+  {
     BaHSTBu.drawButton(); // Navigate to Measure page
+    Main_Page();
   }
 
-  if (BaHSTBu.justPressed()) {
+  if (BaHSTBu.justPressed()) 
+  {
     BaHSTBu.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
     tft.fillScreen(TFT_BLACK);
   }
-*/
+
   /******************************************************************/
   if (pressed && ENTERY.contains(t_x, t_y)) 
   {
@@ -504,4 +508,17 @@ void loop()
   PassKeypad_Loop();
   IdNum = IdKeypad_Loop();
   alarm_action();
+
+    
+// Send data section under test ************************************
+/*
+  if ((millis() - lastTime) > timerDelay) 
+  {
+      Send_Data();
+      lastTime = millis();
+  }
+  ****************************************************************
+
+    Debug();
+*/
 }

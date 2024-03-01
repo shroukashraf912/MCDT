@@ -7,6 +7,24 @@ const char* password = "abo0156962#";
 /*******************************************************************************/
 
 
+/****************************** SERVER *****************************************/
+const char* serverName = "http://15.0.0.11";
+
+// value to be sent
+float sensor1Value = 24.25;
+float sensor2Value = 49.54;
+float sensor3Value = 1005.14;
+
+/******************************************************************************/
+
+/******************************* Time delay ************************************/
+unsigned long lastTime = 0;
+// Timer set to 10 minutes (600000)
+//unsigned long timerDelay = 600000;
+// Set timer to 5 seconds (5000)
+unsigned long timerDelay = 5000;
+/*******************************************************************************/
+
 /********************************* TFT *****************************************/
 #define BUTTON_WIDTH 150
 #define BUTTON_HEIGHT 60
@@ -70,8 +88,8 @@ uint16_t keyColor[15] = {TFT_BLACK, TFT_BLACK, TFT_BLACK,
                          New_C, Send_C, Blue
                         };
               
-char* BSG_Result = NULL;
-char* BP_Result = NULL;
+char* BSG_Result;
+char* BP_Result;
 
 /*******************************************************************************/
 
@@ -113,10 +131,10 @@ State currentState = EXIT_PAGE;  // Initial page
 int editAlarmIndex = -1; // Index of the alarm being edited, -1 means no alarm is being edited
 
 /******************************************************************************/
-unsigned long prevtime_T1 = millis();
-long interval_T1 = 6000;
+unsigned long prevtime_T1 = 0;
+long interval_T1 = 2000;
 
-unsigned long prevtime_T2 = millis();
+unsigned long prevtime_T2 = 0;
 long interval_T2 = 1000;
 /******************************************************************************/
 
@@ -160,6 +178,6 @@ uint16_t IdColor[15] = { TFT_BLACK, TFT_BLACK, TFT_BLACK,
                          TFT_BLACK, TFT_BLACK, TFT_DARKGREY,
                              New_C,    Send_C, Blue
                         };
-char* IdNum = NULL;
+char* IdNum;
 /******************************************************************************/
 /*-----------------------------------------------------------------------------------------------------------------------------*/

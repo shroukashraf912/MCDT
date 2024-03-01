@@ -3,13 +3,14 @@
  *  AUTHER      : Shrouk Ashraf & Ahmed Mohamed 
  *  DATE        : 22/1/2024
  *  DESCRIPTION : Medical watch
- *  VERSION     : 1.3 esp //ID
+ *  VERSION     : 1.4 esp //debug
  **********************************************************************************
  */
 
 /********************************** INCLUDES **************************************/
 /* WIFI Library */
 #include <WiFi.h>
+#include <HTTPClient.h>
 
 /* TFT SPI libraries */
 #include "FS.h"

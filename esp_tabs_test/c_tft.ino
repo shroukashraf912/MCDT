@@ -835,6 +835,7 @@ void Main_Page (void)
   }
   ADD.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
   ABACK.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+  BaHSTBu.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
   for (int btn = 0; btn < MAX_ALARMS; btn++) 
   {
     EDIT[btn].initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
@@ -864,58 +865,33 @@ void Password_Page (void)
 }
 void HSTGP_Page(void)
 {
-  // int x =1;
-  // x = BaHSTBu.isPressed();
-  // while (x == 0) 
-  // {
-    
-
-    unsigned long currentTime = millis();
-    if (currentTime - prevtime_T1 > interval_T1) {
-      tft.fillRect(0, 0, 480, 230, TFT_BLACK);
-      prevtime_T1 = currentTime;
-    }
-
-    tft.setFreeFont(&FreeSans12pt7b);
+    tft.setFreeFont(&FreeSans18pt7b);
+    // unsigned long currentTime = millis();
+    // if ((currentTime - prevtime_T1) > interval_T1) 
+    // {
+    //   tft.fillRect(0,50,tft.width(), 230, TFT_BLACK);
+    //   prevtime_T1 = currentTime;
+    // }
     
     // Vital measurements
-    max30102_HR();
-    max30102_SPO2();
+    max30102_HR_SPO2();
     mlx90614_TEMP();
+    /*
+      // Display BSG result
+      tft.setTextSize(1);
+      tft.setCursor(10, 180);
+      tft.print("BSG    | ");
+      tft.print(BSG_Result);
+      tft.print(" mg/dL");
 
-    // Display BSG result
-    tft.setTextSize(1);
-    tft.setCursor(10, 180);
-    tft.print("BSG    | ");
-    tft.print(BSG_Result);
-    tft.print(" mg/dL");
-
-    // Display BP result
-    tft.setCursor(10, 220);
-    tft.print("BR       | ");
-    tft.print(BP_Result);
-    tft.print(" mmHg");
-
+      // Display BP result
+      tft.setCursor(10, 220);
+      tft.print("BR       | ");
+      tft.print(BP_Result);
+      tft.print(" mmHg");
+    */
     // Display the total button
     BTotal_BUTTON();
-
-    // delay(100);
-    // if (BaHSTBu.isPressed())
-    // {
-    //   break;
-    // }
-  // }
-
-  // Code here will be executed once BaHSTBu is released
-  // Main_Page();
-  // uint16_t t_x_hstgp = 0, t_y_hstgp = 0;
-  // bool pressed_hstgp = tft.getTouch(&t_x_hstgp, &t_y_hstgp);
-
-  // // For debugging, you can print the touch coordinates to the serial monitor
-  // Serial.print("HSTGP_Page - t_x_hstgp: ");
-  // Serial.print(t_x_hstgp);
-  // Serial.print(", t_y_hstgp: ");
-  // Serial.println(t_y_hstgp);
   
 }
 void BSG_Page (void)
@@ -998,9 +974,11 @@ void INFO_Page(void)
   tft.setCursor(50,100);
   tft.println("Name: Shrouk Ashraf Abdelfattah");
   tft.setCursor(50,150);
-  tft.println("ID:   2394829200202");
+  tft.print("ID: ");
+  tft.println(IdNum);
   tft.setCursor(50,200);
-  tft.println("IP:    192.189.1.1");
+  tft.print("IP: ");
+  tft.println(WiFi.localIP());
   RESET_BUTTON();
   PINFO_BUTTON();
 }
@@ -1060,7 +1038,8 @@ void BACK_BUTTON()
 }
 void BTotal_BUTTON()
 {
-  BaHSTBu.initButton(&tft,380,270,150,60,Blue,Blue,TFT_WHITE,"Back", KEY_TEXTSIZE);
+  tft.setFreeFont(&FreeSans9pt7b);
+  BaHSTBu.initButton(&tft,380,270,150,60,Blue,Blue,TFT_WHITE,"Previous", KEY_TEXTSIZE);
   BaHSTBu.drawButton();
 }
 void ADD_BUTTON()
