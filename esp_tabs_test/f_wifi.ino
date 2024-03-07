@@ -1,15 +1,17 @@
 /****************************** CONNECT TO WIFI *********************************/
 void wifi_connect(void)
 {
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
+  tft.setTextColor(White);
+  tft.setCursor(120,150);
+  tft.print("Connecting to ");
+  tft.println(ssid);
 
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) 
   {
     delay(500);
-    Serial.print(".");
+    tft.print(".");
   }
 
   Serial.println("");

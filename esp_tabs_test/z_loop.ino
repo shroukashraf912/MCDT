@@ -412,7 +412,7 @@ void loop()
   if (LOCK.justReleased()) 
   {
     LOCK.drawButton();
-    Password_Page();
+    Setup_Page();
   }
   if (LOCK.justPressed()) 
   {
@@ -503,6 +503,46 @@ void loop()
     SETUP.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
   }
   /******************************************************************/
+  if (pressed && CANCALA.contains(t_x, t_y))
+  {
+    CANCALA.press(true);
+  } 
+  else 
+  {
+    CANCALA.press(false);
+  }
+  if (CANCALA.justReleased()) 
+  {
+    CANCALA.drawButton();
+    Setup_Page();
+  }
+  if (CANCALA.justPressed()) 
+  {
+    tft.fillScreen(TFT_BLACK);
+    CANCALA.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+  }
+  /******************************************************************/
+  if (pressed && WIFI.contains(t_x, t_y))
+  {
+    WIFI.press(true);
+  } 
+  else 
+  {
+    WIFI.press(false);
+  }
+  if (WIFI.justReleased()) 
+  {
+    WIFI.drawButton();
+    wifi_connect();  
+    Setup_Page();
+  }
+  if (WIFI.justPressed()) 
+  {
+    tft.fillScreen(TFT_BLACK);
+    WIFI.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+    SIM.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+  }
+  /******************************************************************/
   BP_Page();
   BSG_Page();
   PassKeypad_Loop();
@@ -521,4 +561,6 @@ void loop()
 
     Debug();
 */
+  MAX30102.getHeartbeatSPO2();
+  mlx.readObjectTempC();
 }

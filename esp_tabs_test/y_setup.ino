@@ -10,7 +10,7 @@ void setup()
   wifi_scan();
   
   //connect to wifi
-  wifi_connect();  
+  // wifi_connect();  
 
   //set the time
   time_setup();

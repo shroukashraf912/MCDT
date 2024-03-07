@@ -749,7 +749,8 @@ char* IdKeypad_Loop()
           strncpy(enteredId, IdBuffer, ID_LEN + 1);
           IdIndex = 0;
           IdBuffer[IdIndex] = '\0';
-          Setup_Page();//send to web to get name
+          Connection_Page();
+          // Setup_Page();//send to web to get name
           break;
         }
         else
@@ -866,13 +867,6 @@ void Password_Page (void)
 void HSTGP_Page(void)
 {
     tft.setFreeFont(&FreeSans18pt7b);
-    // unsigned long currentTime = millis();
-    // if ((currentTime - prevtime_T1) > interval_T1) 
-    // {
-    //   tft.fillRect(0,50,tft.width(), 230, TFT_BLACK);
-    //   prevtime_T1 = currentTime;
-    // }
-    
     // Vital measurements
     max30102_HR_SPO2();
     mlx90614_TEMP();
@@ -995,7 +989,10 @@ void Reset_Page(void)
 }
 void Connection_Page(void)
 {
-  
+  Delete_All_Buttons();
+  tft.fillScreen(Black);
+  WIFI_BUTTON();
+  SIM_BUTTON();
 }
 /*****************************************************************************************/
 
@@ -1047,17 +1044,6 @@ void ADD_BUTTON()
   tft.setFreeFont(&FreeSans9pt7b);
   ADD.initButton(&tft,100,270,150,60,Blue,Blue,TFT_WHITE,"Set alarm", KEY_TEXTSIZE);
   ADD.drawButton();
-  /*
-      int16_t x
-      int16_t y
-      uint16_t w
-      uint16_t h
-      uint16_t outline
-      uint16_t fill
-      uint16_t textcolor
-      char * label
-      uint8_t textsize
-  */
 }
 
 void ENTERY_BUTTON()
@@ -1108,6 +1094,21 @@ void SETUP_BUTTON()
   SETUP.initButton(&tft,240,270,150,60,Blue,Blue,TFT_WHITE,"Enter", KEY_TEXTSIZE);
   SETUP.drawButton();
 }
+void CANALARM_BUTTON()
+{
+  CANCALA.initButton(&tft,240,270,150,60,Blue,Blue,TFT_WHITE,"Exit", KEY_TEXTSIZE);
+  CANCALA.drawButton();
+}
+void WIFI_BUTTON()
+{
+  WIFI.initButton(&tft,120,150,150,60,Blue,Blue,TFT_WHITE,"WIFI", KEY_TEXTSIZE);
+  WIFI.drawButton();
+}
+void SIM_BUTTON()
+{
+  SIM.initButton(&tft,365,150,150,60,Blue,Blue,TFT_WHITE,"SIM", KEY_TEXTSIZE);
+  SIM.drawButton();
+}
 /**************************************************************************************************/
 void MLabel ()
 {
@@ -1120,4 +1121,38 @@ void MLabel ()
   tft.println("MDCT");
   tft.setCursor(10,40);
   tft.println("Your Care Our Mission");
+}
+
+void Delete_All_Buttons()
+{
+    for (int btn = 0; btn < 15; btn++) 
+      {
+        PassKey[btn].initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+        IdKey[btn].initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+        BPKEY[btn].initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+        BSGKEY[btn].initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+        Alarmkey[btn].initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      }
+      for (int btn = 0; btn < MAX_ALARMS; btn++) 
+      {
+        EDIT[btn].initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+        DEL[btn].initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      }
+      ADD.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      ABACK.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      BaHSTBu.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      Ba_EN.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      ENTERY.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      INFO.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      PINFO.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      RESET.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      PASS.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      YES.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      SETUP.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      CANC.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      BSG.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      BP.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      TOTAL.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      CLOCK.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
+      LOCK.initButton(&tft, 0, 0, 0, 0, TFT_BLACK, TFT_BLACK, TFT_BLACK, "", 0);
 }

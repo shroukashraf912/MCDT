@@ -116,8 +116,15 @@ void alarm_action(void)
   {
     if (timeinfo->tm_hour == alarms[i].hour && timeinfo->tm_min == alarms[i].minute && timeinfo->tm_sec == 0) 
     {
-      Serial.printf("Alarm %d:", i + 1);
-      Serial.println("Nowwww!");
+      tft.fillScreen(Black);
+      tft.setTextColor(White);
+      tft.setFreeFont(&FreeSans18pt7b);
+      tft.setTextSize(1);
+      tft.setCursor(190,150);
+      tft.print("Alarm ");
+      tft.println(i + 1);
+      Delete_All_Buttons();
+      CANALARM_BUTTON();
       // Trigger the buzzer
       digitalWrite(BUZZER_PIN, HIGH);
       delay(1000); // Adjust the delay duration based on your buzzer's characteristics

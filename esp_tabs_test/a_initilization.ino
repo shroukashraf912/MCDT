@@ -62,4 +62,7 @@ TFT_eSPI_Button PASS;          // button of enter the password
 TFT_eSPI_Button YES;           // button to accept to make a restart for esp
 TFT_eSPI_Button CANC;          // button to cancel a restart for esp
 TFT_eSPI_Button SETUP;  
+TFT_eSPI_Button CANCALA; 
+TFT_eSPI_Button WIFI;
+TFT_eSPI_Button SIM;
 /*********************************************************************************************/
