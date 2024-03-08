@@ -11,6 +11,7 @@ void setup()
   
   //connect to wifi
   // wifi_connect();  
+  
 
   //set the time
   time_setup();

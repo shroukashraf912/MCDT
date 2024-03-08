@@ -2,18 +2,18 @@
 
 
 /***************************** WIFI ********************************************/
-const char* ssid = "ARK";
-const char* password = "abo0156962#";
+const char* ssid = "shams test 1";
+const char* password = "11111111";
 /*******************************************************************************/
 
 
 /****************************** SERVER *****************************************/
-const char* serverName = "http://15.0.0.11";
+const char* serverName = "http://15.0.0.5";
 
 // value to be sent
-float sensor1Value = 24.25;
-float sensor2Value = 49.54;
-float sensor3Value = 1005.14;
+float sensor1Value = 0;
+float sensor2Value = 0;
+float sensor3Value = 0;
 
 /******************************************************************************/
 

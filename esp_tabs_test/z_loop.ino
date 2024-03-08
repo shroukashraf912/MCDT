@@ -551,16 +551,14 @@ void loop()
 
     
 // Send data section under test ************************************
-/*
+
   if ((millis() - lastTime) > timerDelay) 
   {
       Send_Data();
       lastTime = millis();
   }
-  ****************************************************************
-
-    Debug();
-*/
+ /****************************************************************/
+  // Debug();
   MAX30102.getHeartbeatSPO2();
   mlx.readObjectTempC();
 }
