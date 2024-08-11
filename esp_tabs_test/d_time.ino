@@ -1,68 +1,45 @@
-/******************************************** TIME SETUP *****************************************************/
-void time_setup(void)
+// /******************************************** TIME SETUP *****************************************************/
+void RTC_time_setup()
 {
-  // set notification call-back function
-  sntp_set_time_sync_notification_cb( timeavailable );
-
-  /**
-   * NTP server address could be aquired via DHCP,
-   *
-   * NOTE: This call should be made BEFORE esp32 aquires IP address via DHCP,
-   * otherwise SNTP option 42 would be rejected by default.
-   * NOTE: configTime() function call if made AFTER DHCP-client run
-   * will OVERRIDE aquired NTP server address
-   */
-  sntp_servermode_dhcp(1);    // (optional)
-
-  /**
-   * This will set configured ntp servers and constant TimeZone/daylightOffset
-   * should be OK if your time zone does not need to adjust daylightOffset twice a year,
-   * in such a case time adjustment won't be handled automagicaly.
-   */
-  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer1, ntpServer2);
-
-  /**
-   * A more convenient approach to handle TimeZones with daylightOffset 
-   * would be to specify a environmnet variable with TimeZone definition including daylight adjustmnet rules.
-   * A list of rules for your zone could be obtained from https://github.com/esp8266/Arduino/blob/master/cores/esp8266/TZ.h
-   */
-  //configTzTime(time_zone, ntpServer1, ntpServer2);
-  
+  /* Check DS3231 connection */
+  if (!rtc.begin()) 
+  {
+    Serial.println("Couldn't find RTC");
+    Serial.flush();
+    while (1) delay(10);
+  }
+  if (rtc.lostPower()) 
+  {
+    Serial.println("let's set the time!");
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  }
 }
-/************************************************************************************************************/
-
-
 
 /******************************************** TIME FUNCTION ********************************************/
 //time information
+const char* monthShortStr(uint8_t month) {
+  static const char* monthNames[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+  return monthNames[month - 1]; // Adjust month index to match array indexing (0-based vs. 1-based)
+}
 
 void printLocalTime()
 {
-  struct tm timeinfo;
-  if(!getLocalTime(&timeinfo)){
-    Serial.println("No time available (yet)");
-    return;
-  }
-  
+  DateTime now = rtc.now();
   unsigned long currentTime_2 = millis();
   if (currentTime_2 - prevtime_T2 > interval_T2) 
   {
     tft.fillRect(320, 0, 150, 22, TFT_BLACK);
     prevtime_T2 = currentTime_2;
   }
+  tft.setTextColor(White);
   tft.setFreeFont(&FreeSans9pt7b);
   tft.setTextSize(1);
   tft.setCursor(370,20);
-  tft.println(&timeinfo, "%I:%M %p");
+  tft.printf("%02d:%02d", now.twelveHour(), now.minute());
+  // Battery(); ////////////////////  هنااااااااا يا شمس 
   tft.setCursor(360,40);
-  tft.println(&timeinfo, "%a %d %b");
-}
+  tft.printf("%s %02d %s", daysOfTheWeek[now.dayOfTheWeek()], now.day(), monthShortStr(now.month()));
 
-// Callback function (get's called when time adjusts via NTP)
-void timeavailable(struct timeval *t)
-{
-  Serial.println("Got time adjustment from NTP!");
-  // printLocalTime();
 }
 /************************************************************************************************************/
 
@@ -107,15 +84,26 @@ void printAlarms()
 /******************************************** ALARM ACTION ****************************************************/
 void alarm_action(void) 
 {
-  time_t now;
-  time(&now);
-  struct tm* timeinfo;
-  timeinfo = localtime(&now);
-
+  DateTime now = rtc.now();
+  
+  // Print current time for debugging
+  // Serial.print("Current time: ");
+  // Serial.print(now.hour());
+  // Serial.print(":");
+  // Serial.print(now.minute());
+  // Serial.print(":");
+  // Serial.println(now.second());
+  // Print alarms for debugging
+  // Serial.println("Alarms:");
+  // for (int i = 0; i < numAlarms; i++) {
+  //   Serial.printf("Alarm %d: %02d:%02d\n", i + 1, alarms[i].hour, alarms[i].minute);
+  // }
+  
   for (int i = 0; i < numAlarms; i++) 
   {
-    if (timeinfo->tm_hour == alarms[i].hour && timeinfo->tm_min == alarms[i].minute && timeinfo->tm_sec == 0) 
+    if (now.hour() == alarms[i].hour && now.minute() == alarms[i].minute && now.second() == 0) 
     {
+      check_on_alarm = 1;
       tft.fillScreen(Black);
       tft.setTextColor(White);
       tft.setFreeFont(&FreeSans18pt7b);

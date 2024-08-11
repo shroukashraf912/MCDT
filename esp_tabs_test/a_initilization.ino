@@ -13,14 +13,21 @@ Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 
 /************************************** INTIALIZATION NTP ************************************/ 
-const char* ntpServer1 = "pool.ntp.org";
-const char* ntpServer2 = "time.nist.gov";
-const long  gmtOffset_sec = 7200; /* 2 hours difference */
-const int   daylightOffset_sec = 3600;
+// const char* ntpServer1 = "pool.ntp.org";
+// const char* ntpServer2 = "time.nist.gov";
+// const long  gmtOffset_sec = 5400; /* 1.5 hours difference */
+// const int   daylightOffset_sec = 5400;
 
-const char* time_zone = "CET-1CEST,M3.5.0,M10.5.0/3";  // TimeZone rule for Europe/Rome including daylight adjustment rules (optional)
+// const char* time_zone = "CET-1CEST,M3.5.0,M10.5.0/3";  // TimeZone rule for Europe/Rome including daylight adjustment rules (optional)
+
+/* 3- Initialization of DS3231 */
+/* 3.1- define object */
+RTC_DS3231 rtc;
+/* 3.2- define days of the week */
+char daysOfTheWeek[7][12] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+
 /*********************************************************************************************/
-
+int exit_from_measure = 0;
 
 /************************************** INTIALIZATION TFT_SPI *******************************/ 
 /*
@@ -36,6 +43,7 @@ const char* time_zone = "CET-1CEST,M3.5.0,M10.5.0/3";  // TimeZone rule for Euro
 #define REPEAT_CAL false
 const int MAX_ALARMS = 4;
 #define BUZZER_PIN 13 // Change this to the GPIO pin connected to the buzzer
+
 TFT_eSPI tft = TFT_eSPI();
 /* Invoke the TFT_eSPI button class and create all the button objects */
 TFT_eSPI_Button BPKEY[15];     // keypad of blood pressure
@@ -43,6 +51,7 @@ TFT_eSPI_Button BSGKEY[15];    // keypad of bloof suger glucose
 TFT_eSPI_Button Alarmkey[15];  // keypad of set alarm
 TFT_eSPI_Button PassKey[15];   // keypad of enter password
 TFT_eSPI_Button IdKey[15];     // keypad of Id
+TFT_eSPI_Button CodeKey[15];     // keypad of watch Code in web
 TFT_eSPI_Button EDIT[MAX_ALARMS]; // button of edit alarm  
 TFT_eSPI_Button DEL[MAX_ALARMS];  // button of delete alarm
 TFT_eSPI_Button BSG;           //Blood Suger Glucose
@@ -65,4 +74,27 @@ TFT_eSPI_Button SETUP;
 TFT_eSPI_Button CANCALA; 
 TFT_eSPI_Button WIFI;
 TFT_eSPI_Button SIM;
+TFT_eSPI_Button ID;
+TFT_eSPI_Button Ba_Pass;
+TFT_eSPI_Button AE;
+TFT_eSPI_Button CODE;
+TFT_eSPI_Button keyboard_SSID[50];
+TFT_eSPI_Button keyboard_PASSWORD[50];
 /*********************************************************************************************/
+
+
+
+// SIM card PIN (leave empty if not defined)
+const char simPIN[] = "";
+
+// Define APN for your cellular network provider
+const char apn[] = "internet.vodafone.net";
+const char gprsUser[] = "";
+const char gprsPass[] = "";
+
+
+
+// Initialize TinyGSM client
+HardwareSerial SerialAT(2);
+TinyGsm modem(SerialAT);
+TinyGsmClient client(modem);
